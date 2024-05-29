@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       org_name:
-        required: true
+        required: false
         type: string
       delete_dependents:
         required: false
         type: boolean
         default: false
       port_payload:
-        required: true
+        required: false
         type: string
 jobs:
   delete-repo:
