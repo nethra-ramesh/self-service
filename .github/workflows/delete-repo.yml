@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       org_name:
-        required: false
+        required: true
         type: string
       delete_dependents:
         required: false
         type: boolean
         default: false
       port_payload:
-        required: false
+        required: true
         type: string
 jobs:
   delete-repo:
@@ -30,14 +30,14 @@ jobs:
 
       - name: Delete Repository
         env:
-          
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           REPO_NAME: ${{ fromJson(inputs.port_payload).context.entity }}
         run: |
-          
+          echo $GH_TOKEN
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -X DELETE \
             -H "Accept: application/vnd.github+json" \
-            
+            -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/${{ inputs.org_name }}/$REPO_NAME")
 
           echo "HTTP Status: $HTTP_STATUS"
